@@ -67,7 +67,9 @@ class Culture:
     
     def __str__(self) -> str:
         """String representation of the culture."""
-        return f"Culture {self.culture_id}: {self.plant_species} ({self.status}, {self.get_age_days()} days)"
+        age = self.get_age_days()
+        day_word = "day" if age == 1 else "days"
+        return f"Culture {self.culture_id}: {self.plant_species} ({self.status}, {age} {day_word})"
     
     def __repr__(self) -> str:
         """Developer representation of the culture."""

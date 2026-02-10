@@ -65,7 +65,11 @@ class Protocol:
     
     def __str__(self) -> str:
         """String representation of the protocol."""
-        return f"Protocol: {self.name} ({len(self.steps)} steps, {self.get_total_duration()} days)"
+        step_count = len(self.steps)
+        step_word = "step" if step_count == 1 else "steps"
+        duration = self.get_total_duration()
+        day_word = "day" if duration == 1 else "days"
+        return f"Protocol: {self.name} ({step_count} {step_word}, {duration} {day_word})"
     
     def __repr__(self) -> str:
         """Developer representation of the protocol."""
