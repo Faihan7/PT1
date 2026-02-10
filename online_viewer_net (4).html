@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تحدي خبيرات زراعة الأنسجة النباتية</title>
+  <style>
+    :root{
+      --primary:#2d5a27;
+      --secondary:#8fbc8f;
+      --accent:#f4f9f4;
+      --bg:#e8f5e9;
+      --text:#222;
+      --muted:#6b7280;
+      --white:#fff;
+      --danger:#d32f2f;
+      --ok:#2e7d32;
+      --info:#1565c0;
+      --shadow: 0 10px 25px rgba(0,0,0,.1);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+    .app{
+      width:100%;
+      max-width:860px;
+      background:var(--white);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    header{
+      padding:18px 20px;
+      background:linear-gradient(135deg, #f7fff7, #e9f7ea);
+      border-bottom:1px solid #e5e7eb;
+    }
+    .title-row{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    h1{
+      margin:0;
+      font-size:22px;
+      color:var(--primary);
+      line-height:1.3;
+    }
+    .subtitle{
+      margin:6px 0 0;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:62ch;
+    }
+    .meta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      background:#fff;
+      border:1px solid #e5e7eb;
+      color:#374151;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      box-shadow: 0 4px 10px rgba(0,0,0,.04);
+    }
+    .pill strong{color:var(--primary)}
+    .progress-wrap{
+      padding:14px 20px 18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .progress{
+      flex:1;
+      min-width:220px;
+      background:#e5e7eb;
+      border-radius:999px;
+      height:10px;
+      overflow:hidden;
+    }
+    #progressBar{
+      height:100%;
+      width:0%;
+      background:var(--primary);
+      border-radius:999px;
+      transition:width .25s ease;
+    }
+    .count{
+      font-size:13px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    main{padding:18px 20px 22px;}
+    .card{
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      padding:16px;
+      background:#fff;
+    }
+
+    /* Start screen */
+    #startScreen .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width:720px){
+      #startScreen .grid{grid-template-columns:1fr;}
+    }
+    label{
+      display:block;
+      font-size:13px;
+      color:#374151;
+      margin-bottom:6px;
+    }
+    input[type="text"], select{
+      width:100%;
+      padding:12px 12px;
+      border:1px solid #d1d5db;
+      border-radius:10px;
+      outline:none;
+      font-size:15px;
+      background:#fff;
+    }
+    input[type="text"]:focus, select:focus{
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 4px rgba(143,188,143,.18);
+    }
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .toggle{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:14px;
+      color:#374151;
+      user-select:none;
+    }
+    .toggle input{width:18px;height:18px}
+    .btn{
+      border:none;
+      background:var(--primary);
+      color:#fff;
+      padding:11px 16px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:15px;
+      transition: transform .05s ease, opacity .2s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.secondary{
+      background:#fff;
+      color:var(--primary);
+      border:1px solid var(--secondary);
+    }
+    .btn:disabled{opacity:.55; cursor:not-allowed}
+
+    /* Quiz */
+    #quizScreen{display:none}
+    .question{
+      font-size:18px;
+      font-weight:700;
+      line-height:1.7;
+      margin:0 0 14px;
+    }
+    .options{
+      display:grid;
+      gap:10px;
+    }
+    .opt{
+      width:100%;
+      text-align:right;
+      padding:12px 14px;
+      border-radius:12px;
+      border:2px solid var(--secondary);
+      background:#fff;
+      cursor:pointer;
+      font-size:15px;
+      line-height:1.55;
+      transition: background .15s ease, border-color .15s ease, transform .05s ease;
+    }
+    .opt:hover{background:var(--accent)}
+    .opt:active{transform: translateY(1px)}
+    .opt[disabled]{cursor:not-allowed; opacity:.95}
+    .opt.correct{
+      background:#d9f5dd;
+      border-color: var(--ok);
+    }
+    .opt.wrong{
+      background:#ffe0e0;
+      border-color: var(--danger);
+    }
+
+    #feedback{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:12px;
+      border-right:5px solid var(--info);
+      background:#e8f1ff;
+      display:none;
+      font-size:14px;
+      line-height:1.7;
+    }
+    .actions{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .muted{color:var(--muted); font-size:13px}
+
+    /* Result */
+    #resultScreen{display:none; text-align:center}
+    .score{
+      font-size:44px;
+      font-weight:800;
+      color:var(--primary);
+      margin:10px 0 6px;
+    }
+    .eval{
+      font-size:18px;
+      font-weight:700;
+      margin:0 0 14px;
+    }
+    .summary{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:10px;
+      margin:12px 0 10px;
+    }
+    @media (max-width:720px){
+      .summary{grid-template-columns:1fr}
+    }
+    .stat{
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+      padding:12px;
+      background:#fafafa;
+      text-align:right;
+    }
+    .stat b{color:var(--primary)}
+    .review{
+      text-align:right;
+      margin-top:14px;
+      border-top:1px solid #e5e7eb;
+      padding-top:12px;
+    }
+    .review h3{
+      margin:0 0 8px;
+      font-size:16px;
+      color:#111827;
+    }
+    .review-item{
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+      padding:12px;
+      margin:8px 0;
+      background:#fff;
+    }
+    .review-q{font-weight:700; margin:0 0 8px; line-height:1.7}
+    .review-a{margin:0; color:#111827; line-height:1.7}
+    .tag{
+      display:inline-block;
+      font-size:12px;
+      padding:3px 8px;
+      border-radius:999px;
+      margin-right:6px;
+      vertical-align:middle;
+    }
+    .tag.ok{background:#d9f5dd; color:#0f5132; border:1px solid #b9eac3}
+    .tag.bad{background:#ffe0e0; color:#7a1b1b; border:1px solid #ffc2c2}
+
+    /* Certificate */
+    #certificate{
+      display:none;
+      margin-top:14px;
+      text-align:right;
+      border:2px dashed var(--secondary);
+      background: linear-gradient(180deg, #ffffff, #f7fff7);
+    }
+    .cert-head{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .cert-title{
+      margin:0;
+      color:#1f2937;
+      font-size:18px;
+    }
+    .cert-sub{
+      margin:6px 0 0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:13px;
+      max-width:65ch;
+    }
+    #certQR{
+      width:160px;
+      height:160px;
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+      background:#fff;
+    }
+
+    footer{
+      padding:14px 20px 18px;
+      border-top:1px solid #e5e7eb;
+      background:#fff;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .small{font-size:12px;color:var(--muted);line-height:1.6}
+    .linklike{
+      color:var(--info);
+      text-decoration:underline;
+      cursor:pointer;
+      background:none;
+      border:none;
+      padding:0;
+      font-size:12px;
+    }
+
+    /* Print certificate cleanly */
+    @media print{
+      body{background:#fff !important; padding:0}
+      header, .progress-wrap, footer, #startScreen, #quizScreen, #reviewBox,
+      #retryBtn, #copyBtn, #certBtn, #printCertBtn{display:none !important}
+      #resultScreen{display:block !important}
+      #certificate{display:block !important; border:2px solid #111827 !important}
+      .app{box-shadow:none !important; border-radius:0 !important}
+    }
+  </style>
+</head>
+<body>
+
+<div class="app" role="application" aria-label="اختبار تفاعلي لزراعة الأنسجة النباتية">
+
+  <header>
+    <div class="title-row">
+      <div>
+        <h1>تحدي خبيرات زراعة الأنسجة النباتية</h1>
+        <p class="subtitle">
+          نشاط تعليمي تفاعلي لقياس الفهم التحليلي وربط المفاهيم بالتطبيقات المعملية (In vitro).
+        </p>
+      </div>
+      <div class="meta">
+        <div class="pill">👤 <span id="who">—</span></div>
+        <div class="pill">🎯 <strong id="attempt">محاولة 1</strong></div>
+        <div class="pill">💾 <span id="lastSaved">لا توجد نتيجة محفوظة</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress" aria-label="شريط التقدم"><div id="progressBar"></div></div>
+    <div class="count" id="countText">جاهز للبدء</div>
+  </div>
+
+  <main>
+
+    <!-- Start Screen -->
+    <section id="startScreen" class="card" aria-label="شاشة البداية">
+      <p style="margin:0; line-height:1.8">
+        أدخلي بياناتك لبدء التحدي. (البيانات للاستخدام داخل جهازك فقط).
+      </p>
+
+      <div class="grid">
+        <div>
+          <label for="studentName">الاسم</label>
+          <input id="studentName" type="text" placeholder="مثال: سارة أحمد" autocomplete="name"/>
+        </div>
+        <div>
+          <label for="section">الشعبة / المجموعة</label>
+          <input id="section" type="text" placeholder="مثال: 3B" />
+        </div>
+        <div>
+          <label for="mode">نمط النشاط</label>
+          <select id="mode">
+            <option value="learn" selected>تعليمي (مع توضيح بعد كل سؤال)</option>
+            <option value="test">اختباري (إظهار التوضيح عند نهاية التحدي)</option>
+          </select>
+        </div>
+        <div>
+          <label for="numQ">عدد الأسئلة</label>
+          <select id="numQ">
+            <option value="all" selected>الكل (15)</option>
+            <option value="10">10 أسئلة</option>
+            <option value="8">8 أسئلة</option>
+            <option value="5">5 أسئلة</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <label class="toggle">
+          <input id="shuffle" type="checkbox" checked />
+          خلط ترتيب الأسئلة
+        </label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn secondary" id="loadLastBtn" type="button">عرض آخر نتيجة محفوظة</button>
+          <button class="btn" id="startBtn" type="button">ابدأ التحدي</button>
+        </div>
+      </div>
+      <p class="small" style="margin:10px 0 0">
+        ملاحظة: إذا رغبت بمشاركة هذا النشاط كرابط مباشر، ارفعي الملف على GitHub Pages أو CodePen.
+      </p>
+    </section>
+
+    <!-- Quiz Screen -->
+    <section id="quizScreen" class="card" aria-label="شاشة الأسئلة">
+      <p class="question" id="questionText"></p>
+      <div class="options" id="options"></div>
+
+      <div id="feedback"></div>
+
+      <div class="actions">
+        <span class="muted" id="hintPolicy"></span>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn secondary" id="quitBtn" type="button">إنهاء</button>
+          <button class="btn" id="nextBtn" type="button" disabled>التالي ←</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result Screen -->
+    <section id="resultScreen" class="card" aria-label="شاشة النتيجة">
+      <h2 style="margin:0; color:#111827">اكتمل التحدي ✅</h2>
+      <div class="score" id="finalScore">0 / 0</div>
+      <p class="eval" id="evaluation"></p>
+
+      <div class="summary">
+        <div class="stat"><b>الاسم:</b> <span id="sumName">—</span></div>
+        <div class="stat"><b>الشعبة:</b> <span id="sumSection">—</span></div>
+        <div class="stat"><b>النمط:</b> <span id="sumMode">—</span></div>
+      </div>
+
+      <div class="row" style="justify-content:center; margin-top:6px">
+        <button class="btn" id="retryBtn" type="button">إعادة التحدي</button>
+        <button class="btn secondary" id="copyBtn" type="button">نسخ النتيجة</button>
+        <button class="btn" id="certBtn" type="button">عرض الشهادة</button>
+        <button class="btn secondary" id="printCertBtn" type="button" style="display:none">طباعة/حفظ PDF</button>
+      </div>
+
+      <div class="review" id="reviewBox" style="display:none"></div>
+
+      <!-- Certificate -->
+      <div id="certificate" class="card" aria-label="شهادة المشاركة">
+        <div class="cert-head">
+          <div>
+            <h3 class="cert-title">شهادة مشاركة</h3>
+            <p class="cert-sub">
+              تشهد إدارة النشاط بأن الطالبة أدت تحدي زراعة الأنسجة النباتية بنجاح، ضمن نشاط تعليمي تفاعلي.
+            </p>
+          </div>
+          <img id="certQR" alt="QR"/>
+        </div>
+
+        <div style="margin-top:12px; border-top:1px solid #e5e7eb; padding-top:12px">
+          <p style="margin:6px 0; font-size:16px"><strong>اسم الطالبة:</strong> <span id="certName">—</span></p>
+          <p style="margin:6px 0; font-size:16px"><strong>الشعبة:</strong> <span id="certSection">—</span></p>
+          <p style="margin:6px 0; font-size:16px"><strong>النتيجة:</strong> <span id="certScore">—</span></p>
+          <p style="margin:6px 0; font-size:16px"><strong>التاريخ:</strong> <span id="certDate">—</span></p>
+          <p style="margin:6px 0; font-size:13px; color:#6b7280">
+            <strong>كود التحقق:</strong> <span id="certCode">—</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="small">
+      نشاط تعليمي: أسئلة + توضيح علمي + مراجعة أخطاء + شهادة.<br/>
+      <button class="linklike" id="resetStorageBtn" type="button">حذف النتيجة المحفوظة</button>
+    </div>
+    <div class="small">© نشاط تعليمي لزراعة الأنسجة النباتية</div>
+  </footer>
+
+</div>
+
+<script>
+  // ======= بنك الأسئلة =======
+  const QUESTION_BANK = [
+    {
+      question: "س1: بصفتِك عالمة مستقبلية، لماذا تُعد نظرية 'القدرة الخلوية الكامنة' (Cell Totipotency) هي العمود الفقري لزراعة الأنسجة وليس مجرد انقسام الخلايا؟",
+      options: [
+        "لأنها تسمح للخلية بالنمو في الحجم فقط.",
+        "لأنها تعني قدرة الخلية الواحدة على إعادة برمجة نفسها وراثياً لتكوين كائن كامل.",
+        "لأنها تمنع حدوث الطفرات الوراثية أثناء الزراعة.",
+        "لأنها تفسر سبب موت الخلايا في البيئات السائلة."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ لأن زراعة الأنسجة تقوم على مبدأ أن كل خلية تحمل الشيفرة الوراثية الكاملة لإنتاج نبات مطابق للأصل عند توفير الظروف المناسبة (In vitro)."
+    },
+    {
+      question: "س2: فشل العالِم 'هابرلاندت' (1902) في الحصول على نبات كامل، لكننا ندرسه كأب لهذا العلم. ما هو السبب التحليلي لذلك؟",
+      options: [
+        "لأنه نجح في عزل البروتوبلاست.",
+        "لأنه أول من حدد المشكلات التقنية واقترح استخدام الهرمونات التي لم تكن معروفة حينها.",
+        "لأنه اخترع جهاز الـ PCR.",
+        "لأنه أول من استخدم تقنية Ti-plasmid."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ فقد وضع الأساس النظري وتوقع دور المنظمات الهرمونية، مما مهد الطريق للعلماء من بعده لتطوير البيئات الغذائية."
+    },
+    {
+      question: "س3: عند دراسة ظاهرة 'القطبية' (Polarity) في المختبر، إذا قمتِ بزراعة جزء نباتي بشكل مقلوب، فما هو التوقع العلمي المبني على المصادر؟",
+      options: [
+        "سيتغير سلوك الخلايا وتنتج جذوراً من الأعلى.",
+        "سيظل الجزء العلوي فطرياً ينتج براعم والسفلي ينتج جذوراً وفقاً لنظامه الوراثي.",
+        "سيتوقف النمو تماماً بسبب تأثير الجاذبية.",
+        "ستتحول كل الخلايا إلى نسيج كالوس غير متمايز."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ فالقطبية صفة وراثية ثابتة تحدد اتجاه انتقال الهرمونات وتكشف الأعضاء بغض النظر عن وضعية الزراعة."
+    },
+    {
+      question: "س4: اكتشف 'سكوغ وميلر' (1957) 'مفتاح التحكم' في تكشف الأعضاء. كيف نطبق هذا علمياً في المختبر؟",
+      options: [
+        "بزيادة تركيز السكر فقط.",
+        "عن طريق الموازنة الدقيقة بين نسب الأوكسينات والسيتوكينينات.",
+        "بتقليل كمية الإضاءة في غرف النمو.",
+        "باستخدام بيئة MS بدون هرمونات."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ فالنسبة بين الأوكسين (للتجذير) والسيتوكينين (للتفريع) هي التي توجه تمايز الخلايا."
+    },
+    {
+      question: "س5: لماذا تُعد زراعة 'القمم المرستيمية' هي الحل الذهبي لإنتاج شتلات خالية من الفيروسات؟",
+      options: [
+        "لأن خلايا المرستيم صلبة جداً.",
+        "لأن سرعة انقسام خلايا المرستيم تفوق سرعة انتشار الفيروس وانتقاله عبر الأوعية.",
+        "لأن المرستيم لا يحتوي على أحماض نووية.",
+        "لأن الفيروسات تموت عند التعرض للضوء القوي."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ فالمنطقة المرستيمية (0.2–0.5 ملم) تمتاز بنشاط انقسامي يسبق حركة الفيروس، مما يضمن طهارة الأنسجة."
+    },
+    {
+      question: "س6: ما هو التفسير العلمي لإطلاق مصطلح 'الكلون' (Clone) على نباتات زراعة الأنسجة؟",
+      options: [
+        "لأنها نباتات مهجنة وراثياً.",
+        "لأنها سلالات ناتجة عن إكثار خضري تضمن تطابقاً وراثياً تاماً مع النبات الأم.",
+        "لأنها نباتات ناتجة عن بذور اصطناعية.",
+        "لأنها نباتات تعيش فترة قصيرة."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ كلمة Clone تعني أفراداً متماثلة وراثياً ناتجة عن انقسامات ميتوزية دون تغير في الصفات."
+    },
+    {
+      question: "س7: اكتشاف بلازميد الـ (Ti-plasmid) عام 1974 لم يكن مجرد اكتشاف لبكتيريا، بل كان ثورة لأنه:",
+      options: [
+        "يساعد في تنظيف المختبرات.",
+        "يعمل كناقل طبيعي لإدخال الحمض النووي الغريب إلى جينوم النبات (التحول الوراثي).",
+        "يزيد من إنتاجية محصول الموز.",
+        "يمنع نمو الفطريات في البيئة الغذائية."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ بلازميد Ti من الأجروباكتريم مكّن من دمج الجينات المرغوبة داخل جينوم النبات."
+    },
+    {
+      question: "س8: بصفتِك مديرة مشروع، لماذا تفضلين زراعة الأنسجة للنخيل والموز تحديداً؟",
+      options: [
+        "لأنهما نباتات صحراوية فقط.",
+        "بسبب بطء أو صعوبة طرق الإكثار التقليدية (الفسائل) وتدهور السلالات.",
+        "لأن زراعة الأنسجة توفر في كمية مياه الري.",
+        "لأنها الطريقة الوحيدة لإنتاج ثمار ملونة."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ النخيل ينتج فسائل محدودة وببطء، والموز ينتقل فيه المرض عبر الإكثار التقليدي."
+    },
+    {
+      question: "س9: تكمن خطورة استخدام الهرمونات النباتية بتركيزات عالية في المختبر في احتمالية ظهور:",
+      options: [
+        "نباتات عملاقة جداً.",
+        "تباينات وراثية جسدية (Somaclonal Variation) غير مرغوبة.",
+        "روائح كريهة في المختبر.",
+        "تحلل الأوعية الزجاجية."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ الإجهاد الهرموني قد يسبب طفرات/تغيرات تجعل الناتج يختلف عن الصنف الأصلي."
+    },
+    {
+      question: "س10: ما هي الميزة الاستراتيجية لـ 'بنوك الجينات' (Gene Banks) التي تعمل بنظام زراعة الأنسجة؟",
+      options: [
+        "توفير رواتب الموظفين.",
+        "حفظ الأصول الوراثية النادرة بعيداً عن تقلبات البيئة والآفات الحقلية.",
+        "إنتاج بذور صالحة للأكل مباشرة.",
+        "إجراء تجارب التلقيح الخلطي."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ يتم حفظ السلالات في ظروف نمو محكمة لمنع الانقراض/التدهور."
+    },
+    {
+      question: "س11: استخدام 'الكالوس' (Callus) لإنتاج الأمصال والمواد الطبية يتفوق على زراعة النبات الكامل لأنه:",
+      options: [
+        "الكالوس أجمل شكلاً.",
+        "يسمح باستخلاص المادة الفعالة مباشرة في المختبر وبمساحة ووقت أقل.",
+        "الكالوس لا يحتاج لبيئة غذائية.",
+        "النباتات الكاملة لا تنتج مواد طبية."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ زراعة الكالوس تعمل كمصنع حيوي للميتابوليتات الثانوية دون انتظار دورة الحياة."
+    },
+    {
+      question: "س12: لماذا يُعتبر جهاز الـ PCR (1983) أداة 'رقابة جودة' أساسية في معامل زراعة الأنسجة؟",
+      options: [
+        "لأنه يستخدم في تعقيم الأدوات.",
+        "لفحص خلو الشتلات من الفيروسات الدافنة والتأكد من مطابقتها الوراثية.",
+        "لتحضير البيئات الغذائية.",
+        "لقياس درجة رطوبة الهواء."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ فحوص DNA تساعد على ضمان سلامة المنتج النهائي قبل التوزيع."
+    },
+    {
+      question: "س13: المصطلح العلمي (In vitro) يشير إلى بيئة عمل تمتاز بـ:",
+      options: [
+        "الزراعة تحت ضوء الشمس المباشر.",
+        "النمو داخل الزجاج تحت ظروف معقمة ومتحكم بها بالكامل.",
+        "الزراعة في تربة طينية غنية بالأسمدة.",
+        "النمو في الغابات الطبيعية."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ وتعني حرفياً 'في الزجاج'، وتهدف لعزل الجزء النباتي عن الملوثات الخارجية وضبط الظروف."
+    },
+    {
+      question: "س14: بصفتِك باحثة، كيف تساهم تقنية 'إنقاذ الأجنة' (Embryo Rescue) في برامج التربية؟",
+      options: [
+        "بإنتاج بذور بدون جنين.",
+        "بحماية الأجنة الناتجة عن تهجينات بعيدة من الموت المبكر داخل البذرة.",
+        "بزيادة عدد الأزهار في النبات.",
+        "بتقليل كمية الهرمونات المستخدمة."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ يُستخرج الجنين قبل موته ويُزرع معملياً لضمان بقاء الناتج من التهجينات الصعبة."
+    },
+    {
+      question: "س15: ما هو 'سر الخصوصية' الذي يجعل شتلات زراعة الأنسجة تتفوق إنتاجياً بنسبة 10–20%؟",
+      options: [
+        "لأنها شتلات كبيرة الحجم جداً.",
+        "بسبب خلوها من المسببات المرضية (الفيروسات) وقوة تماثلها الوراثي.",
+        "لأنها تحتاج لأسمدة أقل في الحقل.",
+        "لأنها تنمو في الظلام."
+      ],
+      correct: 1,
+      hint: "الإجابة الصحيحة: (ب)؛ الشتلة النظيفة صحياً والمتماثلة وراثياً تعطي نمواً أفضل وتماثلاً في الحقل."
+    }
+  ];
+
+  // ======= عناصر الواجهة =======
+  const whoEl = document.getElementById('who');
+  const attemptEl = document.getElementById('attempt');
+  const lastSavedEl = document.getElementById('lastSaved');
+
+  const startScreen = document.getElementById('startScreen');
+  const quizScreen  = document.getElementById('quizScreen');
+  const resultScreen= document.getElementById('resultScreen');
+
+  const studentNameEl = document.getElementById('studentName');
+  const sectionEl = document.getElementById('section');
+  const modeEl = document.getElementById('mode');
+  const numQEl = document.getElementById('numQ');
+  const shuffleEl = document.getElementById('shuffle');
+
+  const startBtn = document.getElementById('startBtn');
+  const loadLastBtn = document.getElementById('loadLastBtn');
+  const quitBtn = document.getElementById('quitBtn');
+
+  const questionText = document.getElementById('questionText');
+  const optionsBox = document.getElementById('options');
+  const feedback = document.getElementById('feedback');
+  const nextBtn = document.getElementById('nextBtn');
+  const hintPolicy = document.getElementById('hintPolicy');
+
+  const progressBar = document.getElementById('progressBar');
+  const countText = document.getElementById('countText');
+
+  const finalScore = document.getElementById('finalScore');
+  const evaluation = document.getElementById('evaluation');
+  const sumName = document.getElementById('sumName');
+  const sumSection = document.getElementById('sumSection');
+  const sumMode = document.getElementById('sumMode');
+  const retryBtn = document.getElementById('retryBtn');
+  const copyBtn = document.getElementById('copyBtn');
+
+  const reviewBox = document.getElementById('reviewBox');
+  const resetStorageBtn = document.getElementById('resetStorageBtn');
+
+  // Certificate elements
+  const certBtn = document.getElementById('certBtn');
+  const printCertBtn = document.getElementById('printCertBtn');
+
+  const certificate = document.getElementById('certificate');
+  const certName = document.getElementById('certName');
+  const certSection = document.getElementById('certSection');
+  const certScore = document.getElementById('certScore');
+  const certDate = document.getElementById('certDate');
+  const certCode = document.getElementById('certCode');
+  const certQR = document.getElementById('certQR');
+
+  // ======= حالة التطبيق =======
+  let attempt = 1;
+  let quiz = [];
+  let current = 0;
+  let score = 0;
+  let wrongLog = []; // {qIndex, selected}
+  let lastQRText = "";
+  let lastVerifyCode = "";
+
+  function formatDateTime(ts){
+    const d = new Date(ts);
+    return d.toLocaleString('ar-SA', { hour12:true });
+  }
+
+  function formatDateOnly(ts){
+    const d = new Date(ts);
+    return d.toLocaleDateString('ar-SA', { year:'numeric', month:'long', day:'numeric' });
+  }
+
+  function setWho(){
+    const name = (studentNameEl.value || '').trim();
+    const sec = (sectionEl.value || '').trim();
+    whoEl.textContent = name ? `${name}${sec ? " — " + sec : ""}` : "—";
+  }
+
+  function shuffleArray(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    return arr;
+  }
+
+  function pickQuestions(){
+    let base = QUESTION_BANK.map(q => ({...q}));
+    if(shuffleEl.checked) base = shuffleArray(base);
+
+    const n = numQEl.value;
+    if(n === "all") return base;
+    const k = Math.max(1, Math.min(parseInt(n,10), base.length));
+    return base.slice(0, k);
+  }
+
+  function updateProgress(){
+    const pct = (current / quiz.length) * 100;
+    progressBar.style.width = `${pct}%`;
+    countText.textContent = `السؤال ${Math.min(current+1, quiz.length)} من ${quiz.length}`;
+  }
+
+  function renderQuestion(){
+    const q = quiz[current];
+    questionText.textContent = q.question;
+    optionsBox.innerHTML = "";
+    feedback.style.display = "none";
+    nextBtn.disabled = true;
+
+    q.options.forEach((opt, idx) => {
+      const b = document.createElement('button');
+      b.className = "opt";
+      b.type = "button";
+      b.innerHTML = `• ${opt}`;
+      b.onclick = () => selectAnswer(idx);
+      optionsBox.appendChild(b);
+    });
+
+    hintPolicy.textContent = (modeEl.value === "learn")
+      ? "💡 سيظهر التوضيح العلمي بعد الإجابة مباشرة."
+      : "📝 النمط الاختباري: التوضيح العلمي سيظهر في المراجعة بعد النتيجة.";
+
+    updateProgress();
+  }
+
+  function lockOptions(){
+    document.querySelectorAll('.opt').forEach(btn => btn.disabled = true);
+  }
+
+  function selectAnswer(selectedIdx){
+    const q = quiz[current];
+    const btns = document.querySelectorAll('.opt');
+    lockOptions();
+
+    const correctIdx = q.correct;
+
+    if(selectedIdx === correctIdx){
+      btns[selectedIdx].classList.add('correct');
+      score++;
+    } else {
+      btns[selectedIdx].classList.add('wrong');
+      btns[correctIdx].classList.add('correct');
+      wrongLog.push({ qIndex: current, selected: selectedIdx });
+    }
+
+    if(modeEl.value === "learn"){
+      feedback.innerHTML = `<strong>توضيح علمي:</strong> ${q.hint}`;
+      feedback.style.display = "block";
+    }
+
+    nextBtn.disabled = false;
+    progressBar.style.width = `${((current+1)/quiz.length)*100}%`;
+  }
+
+  function next(){
+    current++;
+    if(current < quiz.length){
+      renderQuestion();
+    }else{
+      showResults();
+    }
+  }
+
+  function evaluationText(sc, total){
+    if(sc === total) return "ممتاز! إتقان عالي وربط ممتاز بين التاريخ والتطبيق المعملي.";
+    if(sc >= Math.ceil(total*0.8)) return "رائع جداً! أساس معرفي قوي وتحليل ممتاز—كمّلي بنفس المستوى.";
+    if(sc >= Math.ceil(total*0.55)) return "جيد جداً. عندك فهم جيد، ويفضل مراجعة النقاط التاريخية ونِسب الهرمونات لتعزيز الاتساق.";
+    return "بداية طيبة. ركّزي على: (Totipotency) + توازن (Auxin/Cytokinin) + تطبيقات (Meristem/PCR) وستتحسن النتيجة بسرعة.";
+  }
+
+  function buildReview(){
+    const mode = modeEl.value;
+    // في النمط الاختباري نعرض التوضيحات بعد النتيجة
+    reviewBox.style.display = "block";
+    reviewBox.innerHTML = `<h3>مراجعة سريعة ${mode === "test" ? "(مع التوضيحات العلمية)" : ""}</h3>`;
+
+    if(wrongLog.length === 0){
+      reviewBox.innerHTML += `<p class="muted" style="margin:0">ما شاء الله—لا توجد أخطاء 🎉</p>`;
+      return;
+    }
+
+    wrongLog.forEach(item => {
+      const q = quiz[item.qIndex];
+      const correctText = q.options[q.correct];
+      const selectedText = q.options[item.selected];
+
+      const box = document.createElement('div');
+      box.className = "review-item";
+      box.innerHTML = `
+        <p class="review-q">${q.question}</p>
+        <p class="review-a"><span class="tag bad">إجابتك</span> ${selectedText}</p>
+        <p class="review-a" style="margin-top:6px"><span class="tag ok">الصحيح</span> ${correctText}</p>
+        ${mode === "test" ? `<p class="review-a" style="margin-top:8px"><strong>التوضيح:</strong> ${q.hint}</p>` : ``}
+      `;
+      reviewBox.appendChild(box);
+    });
+  }
+
+  function saveLastResult(payload){
+    localStorage.setItem("tissue_quiz_last", JSON.stringify(payload));
+    lastSavedEl.textContent = `آخر نتيجة: ${payload.score}/${payload.total} (${formatDateTime(payload.ts)})`;
+  }
+
+  function loadLastResult(){
+    const raw = localStorage.getItem("tissue_quiz_last");
+    if(!raw) return null;
+    try { return JSON.parse(raw); } catch(e){ return null; }
+  }
+
+  function refreshSavedLabel(){
+    const last = loadLastResult();
+    if(!last){
+      lastSavedEl.textContent = "لا توجد نتيجة محفوظة";
+      return;
+    }
+    lastSavedEl.textContent = `آخر نتيجة: ${last.score}/${last.total} (${formatDateTime(last.ts)})`;
+  }
+
+  function makeVerifyCode(sc, total){
+    // كود تحقق بسيط (غير أمني) للتوثيق داخل النشاط
+    const partA = Math.random().toString(36).slice(2,6).toUpperCase();
+    const partB = (sc * 100 + total).toString(36).toUpperCase();
+    return `TC-${partA}-${partB}`;
+  }
+
+  function prepareCertificate(name, sec, sc, total){
+    const ts = Date.now();
+    const dateStr = formatDateOnly(ts);
+    lastVerifyCode = makeVerifyCode(sc, total);
+
+    certName.textContent = name;
+    certSection.textContent = sec;
+    certScore.textContent = `${sc} / ${total}`;
+    certDate.textContent = dateStr;
+    certCode.textContent = lastVerifyCode;
+
+    // نص QR
+    lastQRText =
+      `Tissue Culture Quiz | Name:${name} | Section:${sec} | Score:${sc}/${total} | Date:${dateStr} | Code:${lastVerifyCode}`;
+
+    // توليد QR عبر خدمة خارجية (يحتاج إنترنت)
+    const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(lastQRText);
+    certQR.src = qrUrl;
+
+    // افتراضيًا نخفي الشهادة بعد كل نتيجة
+    certificate.style.display = "none";
+    printCertBtn.style.display = "none";
+    certBtn.textContent = "عرض الشهادة";
+  }
+
+  function showResults(){
+    quizScreen.style.display = "none";
+    resultScreen.style.display = "block";
+    startScreen.style.display = "none";
+
+    finalScore.textContent = `${score} / ${quiz.length}`;
+    evaluation.textContent = evaluationText(score, quiz.length);
+
+    const name = (studentNameEl.value || '').trim() || "—";
+    const sec = (sectionEl.value || '').trim() || "—";
+    const mode = modeEl.value === "learn" ? "تعليمي" : "اختباري";
+
+    sumName.textContent = name;
+    sumSection.textContent = sec;
+    sumMode.textContent = mode;
+
+    const payload = {
+      ts: Date.now(),
+      name, section: sec,
+      mode,
+      score, total: quiz.length,
+      wrongCount: wrongLog.length
+    };
+    saveLastResult(payload);
+
+    buildReview();
+    prepareCertificate(name, sec, score, quiz.length);
+
+    // عند النتيجة: شريط التقدم 100%
+    progressBar.style.width = "100%";
+    countText.textContent = "اكتمل التحدي";
+  }
+
+  function resetSession(){
+    current = 0;
+    score = 0;
+    wrongLog = [];
+    quiz = [];
+    progressBar.style.width = "0%";
+    countText.textContent = "جاهز للبدء";
+    feedback.style.display = "none";
+    nextBtn.disabled = true;
+  }
+
+  function startQuiz(){
+    setWho();
+    attemptEl.textContent = `محاولة ${attempt}`;
+    resetSession();
+    quiz = pickQuestions();
+    current = 0; score = 0; wrongLog = [];
+
+    startScreen.style.display = "none";
+    resultScreen.style.display = "none";
+    quizScreen.style.display = "block";
+
+    renderQuestion();
+  }
+
+  // ======= أحداث =======
+  studentNameEl.addEventListener('input', setWho);
+  sectionEl.addEventListener('input', setWho);
+
+  startBtn.addEventListener('click', startQuiz);
+  nextBtn.addEventListener('click', next);
+
+  quitBtn.addEventListener('click', () => {
+    quizScreen.style.display = "none";
+    resultScreen.style.display = "none";
+    startScreen.style.display = "block";
+    progressBar.style.width = "0%";
+    countText.textContent = "تم الإنهاء — يمكنك البدء من جديد";
+  });
+
+  retryBtn.addEventListener('click', () => {
+    attempt++;
+    resultScreen.style.display = "none";
+    startScreen.style.display = "block";
+    quizScreen.style.display = "none";
+    progressBar.style.width = "0%";
+    countText.textContent = "جاهز للبدء";
+  });
+
+  copyBtn.addEventListener('click', async () => {
+    const name = (studentNameEl.value || '').trim() || "—";
+    const sec  = (sectionEl.value || '').trim() || "—";
+    const mode = modeEl.value === "learn" ? "تعليمي" : "اختباري";
+    const text =
+`نتيجة تحدي زراعة الأنسجة النباتية
+الاسم: ${name}
+الشعبة: ${sec}
+النمط: ${mode}
+النتيجة: ${score}/${quiz.length}
+الأخطاء: ${wrongLog.length}
+التاريخ: ${formatDateTime(Date.now())}
+كود التحقق: ${lastVerifyCode}`;
+    try{
+      await navigator.clipboard.writeText(text);
+      copyBtn.textContent = "تم النسخ ✅";
+      setTimeout(()=> copyBtn.textContent="نسخ النتيجة", 1400);
+    }catch(e){
+      alert("تعذر النسخ تلقائياً. انسخ يدوياً من المتصفح.");
+    }
+  });
+
+  loadLastBtn.addEventListener('click', () => {
+    const last = loadLastResult();
+    if(!last){
+      alert("لا توجد نتيجة محفوظة على هذا الجهاز.");
+      return;
+    }
+    alert(
+`آخر نتيجة محفوظة:
+الاسم: ${last.name}
+الشعبة: ${last.section}
+النمط: ${last.mode}
+النتيجة: ${last.score}/${last.total}
+التاريخ: ${formatDateTime(last.ts)}`
+    );
+  });
+
+  resetStorageBtn.addEventListener('click', () => {
+    localStorage.removeItem("tissue_quiz_last");
+    refreshSavedLabel();
+    alert("تم حذف النتيجة المحفوظة.");
+  });
+
+  // شهادة + طباعة
+  certBtn.addEventListener('click', () => {
+    const isOpen = certificate.style.display === "block";
+    certificate.style.display = isOpen ? "none" : "block";
+    printCertBtn.style.display = isOpen ? "none" : "inline-flex";
+    certBtn.textContent = isOpen ? "عرض الشهادة" : "إخفاء الشهادة";
+  });
+
+  printCertBtn.addEventListener('click', () => {
+    certificate.style.display = "block";
+    window.print();
+  });
+
+  // ======= تهيئة =======
+  refreshSavedLabel();
+  setWho();
+</script>
+
+</body>
+</html>
